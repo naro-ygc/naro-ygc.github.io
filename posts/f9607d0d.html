@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>kernel移植（linux4.115移植） | naro</title><meta name="author" content="naro-ygc,862450734@qq.com"><meta name="copyright" content="naro-ygc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="linux驱动学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kernel移植（linux4.115移植）">
+<meta property="og:url" content="https://naro-ygc.cn/posts/f9607d0d.html">
+<meta property="og:site_name" content="naro">
+<meta property="og:description" content="linux驱动学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naro-ygc.cn/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99/%E5%B0%81%E9%9D%A2.png">
+<meta property="article:published_time" content="2025-02-23T12:49:09.769Z">
+<meta property="article:modified_time" content="2025-05-15T17:53:15.280Z">
+<meta property="article:author" content="naro-ygc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naro-ygc.cn/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99/%E5%B0%81%E9%9D%A2.png"><link rel="shortcut icon" href="/img/log.png"><link rel="canonical" href="https://naro-ygc.cn/posts/f9607d0d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'kernel移植（linux4.115移植）',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-05-16 01:53:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/log.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99/%E5%B0%81%E9%9D%A2.png')"><nav id="nav"><span id="blog-info"><a href="/" title="naro"><span class="site-name">naro</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">kernel移植（linux4.115移植）</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-23T12:49:09.769Z" title="发表于 2025-02-23 20:49:09">2025-02-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-15T17:53:15.280Z" title="更新于 2025-05-16 01:53:15">2025-05-16</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">驱动、bootleader、文件系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">856</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="kernel移植（linux4.115移植）"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1、选择编译器"><a href="#1、选择编译器" class="headerlink" title="1、选择编译器"></a>1、选择编译器</h1><p>安装必备库</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libncurses5-dev libncursesw5-dev</span><br></pre></td></tr></table></figure>
+<p>内核版本，uboot版本，编译器版本，都会影响到程序能否正常运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">/bin/bash</span></span><br><span class="line">path=&quot;/home/ygc/Desktop/linux-gcc/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabihf/bin&quot;</span><br><span class="line">make ARCH=arm CROSS_COMPILE=$path/arm-linux-gnueabihf- distclean</span><br><span class="line">make ARCH=arm CROSS_COMPILE=$path/arm-linux-gnueabihf- imx_v7_defconfig</span><br><span class="line">make ARCH=arm CROSS_COMPILE=$path/arm-linux-gnueabihf- menuconfig</span><br><span class="line">make ARCH=arm CROSS_COMPILE=$path/arm-linux-gnueabihf- all -j16</span><br></pre></td></tr></table></figure>
+<p>确认编译器没有问题。</p>
+<h1 id="2、添加板子的配置文件"><a href="#2、添加板子的配置文件" class="headerlink" title="2、添加板子的配置文件"></a>2、添加板子的配置文件</h1><p>板子的配置文件在arch&#x2F;arm&#x2F;configs&#x2F;目录下，复制一份，修改文件名，并修改内核配置。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp imx_v7_mfg_defconfig imx_v7_naro_defconfig</span><br></pre></td></tr></table></figure>
+
+<p>在这个文件中注释掉下面</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CONFIG_BLK_DEV_BSG is not <span class="built_in">set</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">CONFIG_ARCH_MULTI_V6=y</span></span><br><span class="line">CONFIG_ARCH_MXC=y</span><br></pre></td></tr></table></figure>
+<h1 id="3、添加板子的dtb文件"><a href="#3、添加板子的dtb文件" class="headerlink" title="3、添加板子的dtb文件"></a>3、添加板子的dtb文件</h1><p>CONFIG_ARCH_MULTI_V6 是armv6的配置。<br>arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;目录下，复制一份，修改文件名，并修改内核配置。</p>
+<p>imx6ull-14x14-evk-emmc.dtsi复制一份，改为imx6ull-14x14-evk-emmc-naro.dtsi</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp imx6ull-14x14-evk-emmc.dtsi imx6ull-14x14-evk-emmc-naro.dtsi</span><br></pre></td></tr></table></figure>
+
+<p>在&#x2F;arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;目录下,修改makefile</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">imx6ull-14x14-evk-btwifi.dtb \</span><br><span class="line">imx6ull-14x14-evk-emmc.dtb \</span><br><span class="line">imx6ull-14x14-naro-emmc.dtb \</span><br><span class="line">imx6ull-14x14-evk-gpmi-weim.dtb \</span><br><span class="line">imx6ull-14x14-evk-usb-certi.dtb \</span><br></pre></td></tr></table></figure>
+
+<h1 id="4、修改网络驱动"><a href="#4、修改网络驱动" class="headerlink" title="4、修改网络驱动"></a>4、修改网络驱动</h1><p>imx6ull-14x14-evk.dtsi<br>注释一下部分：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pinctrl_spi4: spi4grp &#123;</span><br><span class="line">        fsl,pins = &lt;</span><br><span class="line">        MX6ULL_PAD_BOOT_MODE0__GPIO5_IO10        0x70a1</span><br><span class="line">        MX6ULL_PAD_BOOT_MODE1__GPIO5_IO11        0x70a1</span><br><span class="line">        # MX6ULL_PAD_SNVS_TAMPER7__GPIO5_IO07      0x70a1</span><br><span class="line">        # MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08      0x80000000</span><br><span class="line">        &gt;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>还有以下部分：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pinctrl-0 = &lt;&amp;pinctrl_spi4&gt;;</span><br><span class="line">// pinctrl-assert-gpios = &lt;&amp;gpio5 8 GPIO_ACTIVE_LOW&gt;;</span><br><span class="line">status = &quot;okay&quot;;</span><br><span class="line">gpio-sck = &lt;&amp;gpio5 11 0&gt;;</span><br><span class="line">gpio-mosi = &lt;&amp;gpio5 10 0&gt;;</span><br><span class="line">// cs-gpios = &lt;&amp;gpio5 7 0&gt;;</span><br><span class="line">num-chipselects = &lt;1&gt;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>增加网口的复位引脚：<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&amp;iomuxc_snvs &#123;</span><br><span class="line">	pinctrl-names = &quot;default_snvs&quot;;</span><br><span class="line">        pinctrl-0 = &lt;&amp;pinctrl_hog_2&gt;;</span><br><span class="line">        imx6ul-evk &#123;</span><br><span class="line"></span><br><span class="line">		pinctrl_enet1_reset: enet1resetgrp &#123;</span><br><span class="line">		fsl,pins = &lt;</span><br><span class="line">			/* used for enet1 reset */</span><br><span class="line">			MX6ULL_PAD_SNVS_TAMPER7__GPIO5_IO07 0x10B0</span><br><span class="line"><span class="meta prompt_">		&gt;</span><span class="language-bash">;</span></span><br><span class="line">		pinctrl_enet2_reset: enet2resetgrp &#123;</span><br><span class="line">		fsl,pins = &lt;</span><br><span class="line">			/* used for enet2 reset */</span><br><span class="line">			MX6ULL_PAD_SNVS_TAMPER8__GPIO5_IO08 0x10B0</span><br><span class="line"><span class="meta prompt_">			&gt;</span><span class="language-bash">;</span></span><br><span class="line">		&#125;;</span><br></pre></td></tr></table></figure></li>
+<li>修改两个网口的时钟配置<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">pinctrl_enet1: enet1grp &#123;</span><br><span class="line">	fsl,pins = &lt;</span><br><span class="line">		MX6UL_PAD_ENET1_RX_EN__ENET1_RX_EN	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_RX_ER__ENET1_RX_ER	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_RX_DATA0__ENET1_RDATA00	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_RX_DATA1__ENET1_RDATA01	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_TX_EN__ENET1_TX_EN	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_TX_DATA0__ENET1_TDATA00	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_TX_DATA1__ENET1_TDATA01	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET1_TX_CLK__ENET1_REF_CLK1 0x4001b009</span><br><span class="line"><span class="meta prompt_">		&gt;</span><span class="language-bash">;</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">pinctrl_enet2: enet2grp &#123;</span><br><span class="line">	fsl,pins = &lt;</span><br><span class="line">		MX6UL_PAD_GPIO1_IO07__ENET2_MDC		0x1b0b0</span><br><span class="line">		MX6UL_PAD_GPIO1_IO06__ENET2_MDIO	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_RX_EN__ENET2_RX_EN	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_RX_ER__ENET2_RX_ER	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_RX_DATA0__ENET2_RDATA00	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_RX_DATA1__ENET2_RDATA01	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_TX_EN__ENET2_TX_EN	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_TX_DATA0__ENET2_TDATA00	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_TX_DATA1__ENET2_TDATA01	0x1b0b0</span><br><span class="line">		MX6UL_PAD_ENET2_TX_CLK__ENET2_REF_CLK2 0x4001b009</span><br><span class="line"><span class="meta prompt_">			&gt;</span><span class="language-bash">;</span></span><br><span class="line">		&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>修改节点属性：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&amp;fec1 &#123;</span><br><span class="line">	pinctrl-names = &quot;default&quot;;</span><br><span class="line">	pinctrl-0 = &lt;&amp;pinctrl_enet1</span><br><span class="line">			&amp;pinctrl_enet1_reset&gt;;</span><br><span class="line">	phy-mode = &quot;rmii&quot;;</span><br><span class="line">	phy-handle = &lt;&amp;ethphy0&gt;;</span><br><span class="line">	status = &quot;okay&quot;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&amp;fec2 &#123;</span><br><span class="line">	pinctrl-names = &quot;default&quot;;</span><br><span class="line">	pinctrl-0 = &lt;&amp;pinctrl_enet2</span><br><span class="line">			&amp;pinctrl_enet2_reset&gt;;</span><br><span class="line">	phy-mode = &quot;rmii&quot;;</span><br><span class="line">	phy-handle = &lt;&amp;ethphy1&gt;;</span><br><span class="line">	status = &quot;okay&quot;;</span><br><span class="line"></span><br><span class="line">	mdio &#123;</span><br><span class="line"><span class="meta prompt_">		#</span><span class="language-bash">address-cells = &lt;1&gt;;</span></span><br><span class="line"><span class="meta prompt_">		#</span><span class="language-bash">size-cells = &lt;0&gt;;</span></span><br><span class="line"></span><br><span class="line">		ethphy0: ethernet-phy@0 &#123;</span><br><span class="line">			compatible = &quot;ethernet-phy-ieee802.3-c22&quot;;</span><br><span class="line">			reg = &lt;0&gt;;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		ethphy1: ethernet-phy@1 &#123;</span><br><span class="line">			compatible = &quot;ethernet-phy-ieee802.3-c22&quot;;</span><br><span class="line">			reg = &lt;1&gt;;</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>修改内核源码：<br>修改fec.c文件，修改fec_probe函数，这个文件在drivers&#x2F;net&#x2F;ethernet&#x2F;freescale&#x2F;fec.c 代码修改如下：<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span></span><br><span class="line"><span class="title function_">fec_probe</span><span class="params">(<span class="keyword">struct</span> platform_device *pdev)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">fec_enet_private</span> *<span class="title">fep</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">fec_platform_data</span> *<span class="title">pdata</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">net_device</span> *<span class="title">ndev</span>;</span></span><br><span class="line">	<span class="type">int</span> i, irq, ret = <span class="number">0</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">resource</span> *<span class="title">r</span>;</span></span><br><span class="line">	<span class="type">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">of_device_id</span> *<span class="title">of_id</span>;</span></span><br><span class="line">	<span class="type">static</span> <span class="type">int</span> dev_id;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">device_node</span> *<span class="title">np</span> =</span> pdev-&gt;dev.of_node, *phy_node;</span><br><span class="line">	<span class="type">int</span> num_tx_qs;</span><br><span class="line">	<span class="type">int</span> num_rx_qs;</span><br><span class="line"></span><br><span class="line">	<span class="type">void</span> __iomem *IMX6U_ENET1_TX_CLK;</span><br><span class="line">	<span class="type">void</span> __iomem *IMX6U_ENET2_TX_CLK;</span><br><span class="line">	IMX6U_ENET1_TX_CLK = ioremap(<span class="number">0X020E00DC</span>, <span class="number">4</span>);</span><br><span class="line">	IMX6U_ENET2_TX_CLK = ioremap(<span class="number">0X020E00FC</span>, <span class="number">4</span>);</span><br><span class="line">	writel(<span class="number">0X14</span>, IMX6U_ENET1_TX_CLK);</span><br><span class="line">	writel(<span class="number">0X14</span>, IMX6U_ENET2_TX_CLK);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// ************</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>修改smsc.c</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/of_gpio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/io.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***********</span><br><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">smsc_phy_reset</span><span class="params">(<span class="keyword">struct</span> phy_device *phydev)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="type">int</span> err, phy_reset;</span><br><span class="line">	<span class="type">int</span> msec = <span class="number">1</span>;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">device_node</span> *<span class="title">np</span>;</span></span><br><span class="line">	<span class="type">int</span> timeout = <span class="number">50000</span>;</span><br><span class="line">	<span class="type">int</span> rc;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (phydev-&gt;mdio.addr == <span class="number">0</span>) &#123;</span><br><span class="line">		np = of_find_node_by_path(<span class="string">&quot;/soc/aips-bus@02100000/ethernet@02188000&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (phydev-&gt;mdio.addr == <span class="number">1</span>) &#123;</span><br><span class="line">		np = of_find_node_by_path(<span class="string">&quot;/soc/aips-bus@02000000/ethernet@020b4000&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!np) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* A sane reset duration should not be longer than 1s */</span></span><br><span class="line">	err = of_property_read_u32(np, <span class="string">&quot;phy-reset-duration&quot;</span>, &amp;msec);</span><br><span class="line">	<span class="keyword">if</span> (!err &amp;&amp; msec &gt; <span class="number">1000</span>)</span><br><span class="line">		msec = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">	phy_reset = of_get_named_gpio(np, <span class="string">&quot;phy-reset-gpios&quot;</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (!gpio_is_valid(phy_reset))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"></span><br><span class="line">	gpio_direction_output(phy_reset, <span class="number">0</span>);</span><br><span class="line">	gpio_set_value(phy_reset, <span class="number">0</span>);</span><br><span class="line">	msleep(msec);</span><br><span class="line">	gpio_set_value(phy_reset, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> rc = phy_read(phydev, MII_LAN83C185_SPECIAL_MODES);</span><br><span class="line">	<span class="keyword">if</span> (rc &lt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> rc;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn">naro-ygc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn/posts/f9607d0d.html">https://naro-ygc.cn/posts/f9607d0d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://naro-ygc.cn" target="_blank">naro</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99/%E5%B0%81%E9%9D%A2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/a299f17f.html" title="字符内核驱动框架"><img class="cover" src="/./../../../../img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E6%A1%86%E6%9E%B6/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">字符内核驱动框架</div></div></a></div><div class="next-post pull-right"><a href="/posts/99b63079.html" title="uboot移植（uboot2016移植）"><img class="cover" src="/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E9%A9%B1%E5%8A%A8%E7%BC%96%E5%86%99/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">uboot移植（uboot2016移植）</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/log.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">naro-ygc</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">8</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E9%80%89%E6%8B%A9%E7%BC%96%E8%AF%91%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">1、选择编译器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E6%B7%BB%E5%8A%A0%E6%9D%BF%E5%AD%90%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-number">2.</span> <span class="toc-text">2、添加板子的配置文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E3%80%81%E6%B7%BB%E5%8A%A0%E6%9D%BF%E5%AD%90%E7%9A%84dtb%E6%96%87%E4%BB%B6"><span class="toc-number">3.</span> <span class="toc-text">3、添加板子的dtb文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E9%A9%B1%E5%8A%A8"><span class="toc-number">4.</span> <span class="toc-text">4、修改网络驱动</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/f8227b6f.html" title="mx6ull编译器选择"><img src="/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/mx6ull/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mx6ull编译器选择"/></a><div class="content"><a class="title" href="/posts/f8227b6f.html" title="mx6ull编译器选择">mx6ull编译器选择</a><time datetime="2025-06-02T14:34:02.442Z" title="发表于 2025-06-02 22:34:02">2025-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/8b3dcb08.html" title="mx6ull的uboot移植"><img src="/img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/mx6ull/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mx6ull的uboot移植"/></a><div class="content"><a class="title" href="/posts/8b3dcb08.html" title="mx6ull的uboot移植">mx6ull的uboot移植</a><time datetime="2025-06-02T14:33:21.645Z" title="发表于 2025-06-02 22:33:21">2025-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/df3b4268.html" title="交叉编译器"><img src="/../../../../img/3_%E9%A9%B1%E5%8A%A8%E3%80%81bootleader%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E5%99%A8/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="交叉编译器"/></a><div class="content"><a class="title" href="/posts/df3b4268.html" title="交叉编译器">交叉编译器</a><time datetime="2025-06-01T22:50:46.560Z" title="发表于 2025-06-02 06:50:46">2025-06-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/9301ed49.html" title="设备与模块"><img src="/img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E8%AE%BE%E5%A4%87%E4%B8%8E%E6%A8%A1%E5%9D%97/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="设备与模块"/></a><div class="content"><a class="title" href="/posts/9301ed49.html" title="设备与模块">设备与模块</a><time datetime="2025-05-22T17:43:53.097Z" title="发表于 2025-05-23 01:43:53">2025-05-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/e7bbd886.html" title="块IO层"><img src="/img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E5%9D%97IO%E5%B1%82/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="块IO层"/></a><div class="content"><a class="title" href="/posts/e7bbd886.html" title="块IO层">块IO层</a><time datetime="2025-05-20T17:21:13.019Z" title="发表于 2025-05-21 01:21:13">2025-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By naro-ygc</div><div class="footer_custom_text">未经本人同意不得作于其他用途</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/网络/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 网络 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/驱动、bootleader、文件系统/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 驱动、bootleader、文件系统 (19)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/Linux开发/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 Linux开发 (13)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/错误总结/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">💡 错误总结 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/常用技巧类/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 常用技巧类 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/AI-深度学习/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 AI-深度学习 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/音视频协议/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 音视频协议 (7)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="https://naro-ygc.cn/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #f2f2f2;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #b30070}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>

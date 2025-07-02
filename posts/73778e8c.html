@@ -1,0 +1,560 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AI人工智能深度学习-视觉基础 | naro</title><meta name="author" content="naro-ygc,862450734@qq.com"><meta name="copyright" content="naro-ygc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="AI-深度学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI人工智能深度学习-视觉基础">
+<meta property="og:url" content="https://naro-ygc.cn/posts/73778e8c.html">
+<meta property="og:site_name" content="naro">
+<meta property="og:description" content="AI-深度学习">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naro-ygc.cn/img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%B0%81%E9%9D%A2.png">
+<meta property="article:published_time" content="2025-02-21T19:27:28.687Z">
+<meta property="article:modified_time" content="2025-02-27T16:59:57.330Z">
+<meta property="article:author" content="naro-ygc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naro-ygc.cn/img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%B0%81%E9%9D%A2.png"><link rel="shortcut icon" href="/img/log.png"><link rel="canonical" href="https://naro-ygc.cn/posts/73778e8c.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AI人工智能深度学习-视觉基础',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-28 00:59:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/log.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%B0%81%E9%9D%A2.png')"><nav id="nav"><span id="blog-info"><a href="/" title="naro"><span class="site-name">naro</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">AI人工智能深度学习-视觉基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-02-21T19:27:28.687Z" title="发表于 2025-02-22 03:27:28">2025-02-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-02-27T16:59:57.330Z" title="更新于 2025-02-28 00:59:57">2025-02-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">AI-深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>21分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="AI人工智能深度学习-视觉基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="准备篇"><a href="#准备篇" class="headerlink" title="准备篇"></a>准备篇</h1><p>rk的sdk编译后，buildrootd的output生成了两个目录，<code>alientek_rv1126</code>存<br>放的是文件系统镜像和交叉编译工具，而<code>alientek_rv1126_recovery</code>存放的<br>是内核kerner,设备树dtb,ramdisk组成的根文件系统。<br>alientek_rv1126的build中的文件是从buildroot中的dl中解压过去的。     </p>
+<p><img src="../../..../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/rk%E4%B8%AD%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6.png" alt="物理分区">      </p>
+<ul>
+<li>rv1126进行学习</li>
+</ul>
+<h1 id="1、-图像相关知识点"><a href="#1、-图像相关知识点" class="headerlink" title="1、 图像相关知识点"></a>1、 图像相关知识点</h1><h2 id="1-1、-RKAIQ宏定义"><a href="#1-1、-RKAIQ宏定义" class="headerlink" title="1-1、 RKAIQ宏定义"></a>1-1、 RKAIQ宏定义</h2><pre><code>    图像传感器获取的数据是raw数据，没有经过任何处理的图像数据。是光源信号转化为数字信号最原始的数据，如果raw图像没有经过任何的优化，没有经过任何的处理，是无法被人类查阅的。
+    raw数据是无损画质的图像，但是占的空间很大
+</code></pre>
+<h2 id="1-2、文件系统分区"><a href="#1-2、文件系统分区" class="headerlink" title="1-2、文件系统分区"></a>1-2、文件系统分区</h2><p>文件系统可以使用ls &#x2F;dev查看，文件分区分为用户层区和保存一些签名的，内<br>核ubot相关的分区，<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png" alt="物理分区"><br>在linux系统中可以采用以下的方式查看分区信息     </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">一、查看设备节点 `ls /dev/`</span><br><span class="line"></span><br><span class="line">二、使用命令 `lsblk`</span><br><span class="line"></span><br><span class="line">三、`fdisk -l`` 查看（UDA）分区列表</span><br><span class="line"></span><br><span class="line">四、查看（UDA）分区情况 `cat /proc/partitions` 或者 `fdisk /proc/partitions`</span><br><span class="line"></span><br><span class="line">五、查看已经挂载的文件系统磁盘占用情况`df -h`</span><br><span class="line"></span><br><span class="line">六、查看已挂载的文件系统格式`df -h -T`</span><br><span class="line"></span><br><span class="line">七、查看对应分区的文件系统的格式`fsck -N /dev/mmcblk0p1`</span><br><span class="line"></span><br><span class="line">八、查看文件系统的分区表 `vi /etc/fstab`</span><br><span class="line"></span><br><span class="line">九、也可以采用 `more /etc/fstab`</span><br><span class="line"></span><br><span class="line">十、也可以采用`mount`查看</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>rk1126的分区文件parameter.txt存放在sdk中的rockdev中，</p>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/parameter.png">     </p>
+<pre><code>    CMDLINE为分区的配置。
+ 分区表的格式为：
+ 分区大小@所在地址（分区名）
+ 最后的-@所在地址（分区名：grow）的&quot;-&quot;代表将剩余的内存留给该分区，&quot;grow&quot;的写法只能放在CMDLINE最后。
+</code></pre>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%88%86%E5%8C%BA%E6%96%87%E4%BB%B6parameter.png">     </p>
+<pre><code>    `blkid`可以查看分区的uuid
+</code></pre>
+<h3 id="1-2-1、尝试修改分区"><a href="#1-2-1、尝试修改分区" class="headerlink" title="1-2-1、尝试修改分区"></a>1-2-1、尝试修改分区</h3><p>添加一个分区<br>第一步：修改分区文件parameter.txt文件。<br>第二步：烧录系统<br>第三步：格式化分区（格式化为某种格式的文件系统）<br>第四步：查看是否格式化成功<br>第五步：挂载    </p>
+<h3 id="1-2-2、镜像烧录"><a href="#1-2-2、镜像烧录" class="headerlink" title="1-2-2、镜像烧录"></a>1-2-2、镜像烧录</h3><p><code>在添加配置文件的时候，注意镜像存在的位置，配置文件添加上后，后面的镜像地址不一定是对的。</code></p>
+<p><code>loader需要注意的是在编译出来的文件中并没有，镜像名字叫做MiniLoaderAll.bin，是二进制文件。</code></p>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/MiniLoaderAll.png"></p>
+<pre><code>    这个配置文件的修改方法是导入完配置后，修改自己镜像路径，然后在导出自
+    己的配置。
+</code></pre>
+<p> <img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BF%AE%E6%94%B9.png">   </p>
+<ul>
+<li>烧写有两种模式：“LOADER”和“MASKROM，LOADER是使用uboot为基础的。<br>更改分区一定要是用MASKROM模式。</li>
+</ul>
+<p>烧录完成后，就能在&#x2F;dev下看到新增加的分区，<br>使用fdisk -l可以看到分区的名字。<br>这个时候就完成了上面所说的第二步，<br>如果这个时候去挂在，很大概率是挂在不上的，<br>这里使用fsck -N &#x2F;dev&#x2F;mmcblk0p10看下设置的分区的格式，       </p>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%88%86%E5%8C%BA%E6%9F%A5%E8%AF%A2.png">          </p>
+<ul>
+<li>格式化</li>
+</ul>
+<p>使用mkfs.xxx -F &#x2F;dev&#x2F;mmcblk0p10进行格式化操作。     </p>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E6%A0%BC%E5%BC%8F%E5%8C%96.png"></p>
+<ul>
+<li>挂载</li>
+</ul>
+<p>mkdir XXX<br>mount &#x2F;dev&#x2F;mmcblk0p10 xxx<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E6%8C%82%E8%BD%BD.png">       </p>
+<h2 id="1-3、开机自启动"><a href="#1-3、开机自启动" class="headerlink" title="1-3、开机自启动"></a>1-3、开机自启动</h2><p>linux启动第一个运行的进程是init,它是所有进程的父进程，程序最先启动的就是它，<br>命令在&#x2F;sbin&#x2F;init，它启动之后要去读&#x2F;etc&#x2F;inittab配置文件     。<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/inittab.png"><br>&#x2F;etc&#x2F;inittab文件的语法格式<br><code>标签：运行级别：操作：进程</code><br>label:runlevel:action:process<br>label登记项标识符，表示输入的值     </p>
+<table>
+<thead>
+<tr>
+<th align="center">标示项</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">id</td>
+<td align="center">用来定义缺省的init运行级别（runlevel）</td>
+</tr>
+<tr>
+<td align="center">si</td>
+<td align="center">系统初始化的进程</td>
+</tr>
+<tr>
+<td align="center">ln</td>
+<td align="center">指明该进程可以使用的runlevel的级别 （级别为0-6，共7个运行级别）</td>
+</tr>
+<tr>
+<td align="center">ud</td>
+<td align="center">升级进程的ud值可以唤醒&#x2F;sbin&#x2F;update进程，该进程为了保持磁盘的完整性，对磁盘进行i&#x2F;o操作前清空了整个的i&#x2F;o缓冲区</td>
+</tr>
+<tr>
+<td align="center">ca</td>
+<td align="center">当按下ctrl+alt+del时运行的进程</td>
+</tr>
+<tr>
+<td align="center">pf</td>
+<td align="center">当ups表明断电时运行的进程</td>
+</tr>
+<tr>
+<td align="center">pr</td>
+<td align="center">在系统真正关闭之前，ups发出电源恢复信号时需要运行的程序</td>
+</tr>
+<tr>
+<td align="center">x</td>
+<td align="center">将系统转入x终端时需要运行的程序</td>
+</tr>
+</tbody></table>
+<p>runlevel运行级别</p>
+<table>
+<thead>
+<tr>
+<th align="center">级别</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">runlevel 0</td>
+<td align="center">系统停机状态，系统默认运行级别不能设置为0，否则不能正常启动</td>
+</tr>
+<tr>
+<td align="center">runlevel 1</td>
+<td align="center">单用户工作模式，root权限，用于系统维护，禁止远程登陆</td>
+</tr>
+<tr>
+<td align="center">runlevel 2</td>
+<td align="center">多用户工作模式（但不支持NFS），命令行模式登录</td>
+</tr>
+<tr>
+<td align="center">runlevel 3</td>
+<td align="center">完全的多用户工作模式（有NFS），命令行模式登录</td>
+</tr>
+<tr>
+<td align="center">runlevel 4</td>
+<td align="center">系统未使用的模式。保留</td>
+</tr>
+<tr>
+<td align="center">runlevel 5</td>
+<td align="center">x11图形模式，登陆后进入图形GUI模式</td>
+</tr>
+<tr>
+<td align="center">runlevel 6</td>
+<td align="center">系统正常关闭并且重启，默认运行级别不能设置为6，否则不能正常启动</td>
+</tr>
+</tbody></table>
+<p>开发板的文件系统没有设置有文件级别，可以尝试到ubuntu下查看。<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/ubuntu%E5%90%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E7%9A%84%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB.png">       </p>
+<p>使用<code>runlevel</code>这个命令可以查看当前的系统处于什么模式下。<br>在开发版中，可以不对上面的两项进行设置。 （两项主要时label和runlevel两项）    </p>
+<p>action操作      </p>
+<table>
+<thead>
+<tr>
+<th align="center">标示项</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">boot</td>
+<td align="center">只在系统运行时启动</td>
+</tr>
+<tr>
+<td align="center">bootwait</td>
+<td align="center">在系统启动运行时，系统启动后，当第一次从单用户模式</td>
+</tr>
+<tr>
+<td align="center">sysinit</td>
+<td align="center">在运行boot或者bootwait进程之前运行，指定的进程在访问控制台之前执行（为init提供初始化命令的路径）</td>
+</tr>
+<tr>
+<td align="center">respawn</td>
+<td align="center">不管何时终止都重新启动进程 （每当相应的进程终止执行便会重新启动）</td>
+</tr>
+<tr>
+<td align="center">shutdown</td>
+<td align="center">当关机时要运行的进程</td>
+</tr>
+<tr>
+<td align="center">ctrlaltdel</td>
+<td align="center">当ctrl + alt + del 三个键同时按下时运行</td>
+</tr>
+<tr>
+<td align="center">wait</td>
+<td align="center">告诉init 必须等到相应的进程完成之后才能继续执行</td>
+</tr>
+</tbody></table>
+<p>process进程<br>意思就是一些可执行的文件，或者命令什么的。      </p>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/1126%E7%9A%84inittab.png"><br>第一个，挂在proc文件系统。通过这个proc文件系统，内核和用户就可以通讯了。<br>第二个，重新挂在，权限可读可写，挂载在根文件目录。<br>这里的mount -a 2 &gt; &#x2F;dev&#x2F;null 相当于黑洞，2是标准输出，定向到&#x2F;dev&#x2F;null，意思就是丢弃。<br>::sysinit &#x2F;bin&#x2F;hostname -F &#x2F;etc&#x2F;hostname 显示主机名。<br>::respawn :&#x2F;bin&#x2F;sh  作用是初始化shell终端。<br>::sysinit:&#x2F;etc&#x2F;init.d&#x2F;rcS在访问控制台之前先访问这个脚本(重点)。   </p>
+<p>而关机的操作就是下面的stuff to do before rebooting<br>操作代号为shutdown<br>::shutdown: &#x2F;etc&#x2F;init.d&#x2F;rcK  关机的时候要执行这个脚本。<br>::shutdown: &#x2F;sbin&#x2F;swapoff -a 在linux下内存管理，必须使用交换区来使用虚拟内存，这个命令就是关闭虚拟内存。<br>如果需要打开交换区，使用的命令是swapon命令<br>::shutdown: &#x2F;bin&#x2F;umont -a -r 表示在关机的时候要卸载所有的内存。      </p>
+<ul>
+<li>而在于init.d目录下，在inittab中有开机的时候会区执行一个脚本。<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC.png"><br>上图ubutnu系统中，以s开头的代表开机时要运行的脚本，以k开头代表关机时要运行的脚本。<br>格式是k&#x2F;s+数字+字符串.sh，这里数字很重要，代表运行的优先级，数字越小优先级越高，如果优先级相同，<br>则使用后面字符串的ascii码值，码值越小，运行级别越高。从脚本的字符串可以看出运行脚本的作用。</li>
+</ul>
+<p>一般执行完更改的操作后，要使用sync同步一下缓存。<br>系统中有一个守护进程，start-stop-daemon这个命令就是开启守护进程。<br>&#x2F;sbin&#x2F;ifup 这个命令一般是用来启动网络的，这些命令一般在系统启动后的开机脚本中都会用到。  </p>
+<ul>
+<li>扩展<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">start-stop-daemon</span><br><span class="line">start-stop-daemon是OpenRC计划的一部分，这个程序最先出现在Debian系的Linux发行版中，这里有个比较古老的手册页面，更详细更直观的办法当然是通过man start-stop-daemon来查看手册了。</span><br><span class="line"></span><br><span class="line">start-stop-daemon最基本的两个功能就是--start和--stop，简写为-S和-K，然后再加上一个-s|--signal来给进程发送信号，功德圆满。</span><br><span class="line"></span><br><span class="line">-x, --exec daemon，daemon就是真正要执行的进程脚本，比方说启动nginx，那么就是start-stop-daemon -x nginx</span><br><span class="line">-p, --pidfile pidfile，指定pid文件，至于pid文件的用途就多了，stop,status都少不了它。</span><br><span class="line">-n, --name，如果没有指定pid文件，那么就要通过指定name来停止进程了。</span><br><span class="line">-u, --user user[:group]，指定脚本用哪个用户或用户组执行，init脚本是必须使用root权限来执行的，但是它fork出来的子进程我们一般会选择一个权限较低的用户。</span><br><span class="line">-b, --background，强制脚本在后台执行。</span><br><span class="line">-m, --make-pidfile，这个一般和-b配合，用于生成pid文件</span><br><span class="line">-d, --chdir path，切换进程的主目录，这个在构建守护进程的时候是很常用的。</span><br><span class="line">-r, --chroot path，在某些安全性要求较高的情况下，我们就需要用到chroot将进程工作环境与物理环境完全隔离开来。</span><br><span class="line">-1, --stdout logfile，将标准输出记录到log文件，与之相对应的就是-2, --stderr标准错误流。</span><br><span class="line">-w, --wait milliseconds，进程启动后，有这个参数会等待几毫秒来检测进程是否仍然存活。</span><br><span class="line">-x daemon后面跟的执行脚本必须只能是一个文件名，有些程序运行时还需要指定一些参数，比如nginx -c file来指定nginx的配置文件，使用start-stop-daemon -x &quot;nginx -c file&quot;是会报错的，这些程序内的参数以另一种方式加载，start-stop-daemon -x daemon -- $ARGV，这里的双横线--后面跟的所有参数就会被带到程序中了，比如start-stop-daemon -x nginx -c /etc/nginx.conf</span><br></pre></td></tr></table></figure></li>
+<li>这些文件是通过rcS文件被启动起来的，而rcS文件是通过开机的启动配置，inittab中定义的。   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[root@ATK-DLRV1126:/etc/init.d]# cat rcS</span><br><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># Start all init scripts in /etc/init.d</span><br><span class="line"># executing them in numerical order.</span><br><span class="line">#</span><br><span class="line">for i in /etc/init.d/S??* ;do   #这里就是取遍历启动文件，以大S开头的文件</span><br><span class="line"></span><br><span class="line">     # Ignore dangling symlinks (if any).</span><br><span class="line">     [ ! -f &quot;$i&quot; ] &amp;&amp; continue</span><br><span class="line"></span><br><span class="line">     case &quot;$i&quot; in</span><br><span class="line">        *.sh)</span><br><span class="line">            # Source shell script for speed.</span><br><span class="line">            (</span><br><span class="line">                trap - INT QUIT TSTP</span><br><span class="line">                set start   </span><br><span class="line">                . $i      </span><br><span class="line">            )</span><br><span class="line">            ;;</span><br><span class="line">        *)</span><br><span class="line">            # No sh extension, so fork subprocess.</span><br><span class="line">            $i start</span><br><span class="line">            ;;</span><br><span class="line">    esac</span><br><span class="line">done</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+同样的。rcK文件同样类似如此。</li>
+</ul>
+<p><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8%E6%B5%81%E7%A8%8B.png">   </p>
+<h2 id="1-4、利用开机自启动，实现静态ip的设置"><a href="#1-4、利用开机自启动，实现静态ip的设置" class="headerlink" title="1-4、利用开机自启动，实现静态ip的设置"></a>1-4、利用开机自启动，实现静态ip的设置</h2><ul>
+<li>扩展网络相关点<br>linux下，网络的dns放在了&#x2F;etc&#x2F;resolv.conf文件中。<br>对于网络的设置，在设置这些之前，需要关闭connman服务，否则可能导致修改不生效。<br>网络网卡也是在初始中启动的（需注意）。</li>
+<li>设置静态ip<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">  start)</span><br><span class="line">        printf &quot;stop connman: &quot;</span><br><span class="line">        /etc/init.d/S45connman stop</span><br><span class="line">        echo &quot;stop connman ok!&quot;</span><br><span class="line">        echo &quot;nameserver 8.8.8.8&quot;&gt;&gt; /etc/resolv.conf</span><br><span class="line">        ;;</span><br><span class="line">  stop)</span><br><span class="line">        printf &quot;nothing ... &quot;</span><br><span class="line">        echo &quot;.........&quot;</span><br><span class="line">        ;;   //注意这里的分号        </span><br><span class="line">  *)</span><br><span class="line">        echo &quot;Usage: $0 &#123;start|stop|restart&#125;&quot;</span><br><span class="line">        exit 1</span><br><span class="line">esac</span><br><span class="line"></span><br><span class="line">exit $?</span><br><span class="line">```    </span><br><span class="line">在/etc/init.d下，按照规则，创建个脚本，让它开机运行。     </span><br><span class="line"></span><br><span class="line">在启动文件中，有一个/sbin/ifup -a，这个命令就是去解析下面要说的文件。   </span><br><span class="line">* 配置/etc/network/interfaces         </span><br><span class="line">这个配置主要有几个参数     </span><br><span class="line"></span><br><span class="line">| 参数 | 作用 |  </span><br><span class="line">| :--------: | :--------:|      </span><br><span class="line">| auto | 开机启用loopback网卡 |</span><br><span class="line">| iface lo inet loopback | 将lo接口设置为一个本地回环（loopback）地址 |</span><br><span class="line">|  |  建议：不同的接口之间配置部分必须留有一个空格  |</span><br><span class="line">| auto eth0 |  开机启用eth0网卡   |</span><br><span class="line">| iface eth0 inet static |  指出eth0接口使用静态（static）IP地址 |</span><br><span class="line">| address 192.168.6.100 | 所设置的eth0的静态IP地址 |</span><br><span class="line">| network 192.168.6.0 | 网段 |</span><br><span class="line">| netmask 255.255.255.0 | 子掩码 |</span><br><span class="line">| broadcast 192.168.0.255 | 广播地址 |</span><br><span class="line">| gateway 192.168.6.1 | 网关 | </span><br><span class="line"></span><br><span class="line">* 扩展 1    </span><br><span class="line">shell命令 ip a可以查看网络     </span><br><span class="line">route -n 可以查看网关     </span><br><span class="line">cat /etc/resolv.conf</span><br><span class="line"></span><br><span class="line">* 扩展 2    </span><br><span class="line">  同样是去配置/etc/network/interfaces         </span><br><span class="line">              </span><br><span class="line">| 参数  |  作用  |         </span><br><span class="line">| :-----: | :-----: |            </span><br><span class="line">| auto lo | 开机启用loopback网卡 |                      </span><br><span class="line">| iface lo inet loopback | 将lo接口设置为一个本地回环（loopback）地址 |</span><br><span class="line">| |建议： 不同的接口之间配置部分必须留一个空格 |</span><br><span class="line">| auto eth0 | 开机启用eth0 网卡 |</span><br><span class="line">|  iface eth0 inet dhcp  |   指出eth0接口使用动态（dhcp）IP地址   |</span><br><span class="line"></span><br><span class="line">有的开发板没有这个文件，例如富瀚，但是可以配置udhcpc代替。</span><br><span class="line"></span><br><span class="line">* 扩展 3       </span><br><span class="line">  同样的。网卡可以设置两个ip地址。     </span><br><span class="line"> </span><br><span class="line"> | 参数  |  作用  |</span><br><span class="line"> | :-----:| :------: |</span><br><span class="line"> | 这里接着上面写     |</span><br><span class="line"> | auto eth0:1 | 注意 这里有冒号  这里可以与第一行合并为一行auto eth0 eth0:1 | </span><br><span class="line"> | iface eth0:1 inet static|    </span><br><span class="line"> |address xxx xxx|</span><br><span class="line"> | 其它类似 |</span><br><span class="line"></span><br><span class="line">* 扩展 4    </span><br><span class="line">     同样是去配置/etc/network/interfaces 还有一些高级的操作。可以去执行一些shell命令。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">| 选项 | 描述 |</span><br><span class="line">| :-----: | :------|</span><br><span class="line">| pre-up | 网卡启用前的动作 |</span><br><span class="line">| up | 网卡启用时候的动作 |</span><br><span class="line">| post-up | 网卡启用后的动作 |</span><br><span class="line">| pre-down | 网卡关闭前的动作 |</span><br><span class="line">| down | 网卡关闭时动作 |</span><br><span class="line">| post-down | 网卡关闭后动作 |</span><br><span class="line"></span><br><span class="line">例如:           </span><br><span class="line">1、设置dns     </span><br><span class="line">post-up echo &quot;nameserver 8.8.8.8&quot;&gt;&gt;/etc/resolv.conf        </span><br><span class="line"></span><br><span class="line">2、设置默认网关      </span><br><span class="line">post-up echo ip route add default via 192.168.6.1      </span><br><span class="line"></span><br><span class="line">3、网卡关闭后删除配置的默认网关      </span><br><span class="line">down route del default gw 192.168.6.1       </span><br><span class="line"></span><br><span class="line">或者另一种方式：</span><br></pre></td></tr></table></figure>
+auto eth0<br>iface eth0 inet manual<br>up ifconfig $IFACE 0.0.0.0 up<br>up &#x2F;demo&#x2F;ip.sh<br>down ifconfig $IFACE down</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/demo/ip.sh文件的内容    </span><br></pre></td></tr></table></figure>
+<p>#!&#x2F;bin&#x2F;sh<br>ifconfig eth0 192.168.6.100 netmask 255.255.255.0 broadcast 192.168.0.25 gateway 192.168.1.1 route add default gw 192.168.6.1 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"># 2、RKMediak框架及其例程介绍     </span><br><span class="line">RKMedia是RK提供的一种多媒体处理方案，可以实现音视频捕获，音视频输出，音视频编解码等功能。   </span><br><span class="line">![](../../../img/6_AI-深度学习/AI视觉/RKMeidia的模块图.png)  </span><br><span class="line"></span><br><span class="line">如MPP主要用于视频的编解码。    </span><br><span class="line"> docs/Common/DISPLAY 中 Rockchip_Developer_Guide_HDMI_CN.pdf记录了hdmi相关信息。（很重要，对lc850开发，客户需要edid支持。相关点内容里面有）。</span><br><span class="line"></span><br><span class="line">## 1、sdk中RKMedia例程介绍   </span><br><span class="line">RKMedia在sdk中的源码目录： external/rkmedia/exdample ，里面存放了rk的例程。</span><br><span class="line"></span><br><span class="line">sdk一键编译后（./build.sh）后，自动编译了RKMedia了：     </span><br><span class="line">放置在buildroot/output/alientek_rv1126/build/rkmedia.     </span><br><span class="line">可执行文件就在这个目录下buildroot/output/alientek_rv1126/build/rkmedia/examales</span><br><span class="line">打包过的rkmedia文件存放在上面的...../oem/usr/bin中。</span><br><span class="line"></span><br><span class="line">1、在终端里输入&quot;rkmedia_&quot;,再按TAB键，可以显示命令。    </span><br><span class="line">2、终端里输入&quot;rkmedia_vi_vo_test --help&quot;可以查看命令的使用 。  （在例程中代码中有说明，可以到例程代码中查看）</span><br><span class="line">3、通过rkmedia代码查看命令的使用和例程功能。</span><br><span class="line">![](../../../img/6_AI-深度学习/AI视觉/rkmedia_vi_vo_test例程示例.png)  </span><br><span class="line"></span><br><span class="line">* 扩展 </span><br><span class="line">  认识iq文件。正点原子的开发板的iq文件在/etc/iqfiles目录下：</span><br></pre></td></tr></table></figure>
+<p>imx355_…….xml<br>imx415_………xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">![](../../../img/6_AI-深度学习/AI视觉/iq文件作用.png)  </span><br><span class="line"></span><br><span class="line">raw数据不符合人眼效果，使用rkaiq去矫正，矫正需要iq文件。            </span><br><span class="line">iq： image quality 图像质量           </span><br><span class="line">isp： image signal processor 图像信号处理器      </span><br><span class="line">image signal process 图像信号处理器    </span><br><span class="line"></span><br><span class="line">`注意，在rv1126上所使用的imx415和；335摄像头，需要通过rkmedia摄像头来调用`</span><br><span class="line">`,因为两个设想头输出的是最原始的raw数据`    </span><br><span class="line">有一个岗位，iq tuning工程师，就是专门调整摄像头的。   </span><br><span class="line">xml参数配置文件就是iq工程师调试的。  </span><br><span class="line"></span><br><span class="line">测试例程需要注意的点 ：1、如果开启了正点原子的出场app占用了摄像头应用(isp</span><br><span class="line">占用)，请先关闭应用以后再测试其他摄像头应用，否则运行其他摄像头应用会报错。    </span><br><span class="line">![](../../../img/6_AI-深度学习/AI视觉/ips被正点原子占用.png)       </span><br><span class="line"></span><br><span class="line">2、不能在开启ispserver服务的时候又指定iqfiles，会报错。两者存在冲突。二者选一个，sensor为非HDR模式时，可开启ispserver，sensor为HDR模式时。需要指定iqfiles。           </span><br><span class="line">### 2-1-1、查看ispserver</span><br><span class="line"> 服务是否已经开启了：</span><br><span class="line"> ps -aux |grep ispserver     </span><br><span class="line"> 开启ispserver服务： </span><br><span class="line"> ispserveer --no-sync-db &amp; //表示不开启数据库服务dbserver   </span><br><span class="line"> 或者 /usr/bin/ispserver &amp; //可能会开启dbserver     </span><br><span class="line"></span><br><span class="line">注意 ： 如果开启了摄像头应用（mediaserver）,请先将其关闭后才可以使用RKmedia抓取图片。    </span><br><span class="line">开启和关闭mediaserver的脚本在开发板的/oem目录下：    </span><br><span class="line">```shell</span><br><span class="line">开启摄像头应用（mediaserver）</span><br><span class="line">/oem/RKLunch.sh &amp; //主要使用在ipc开发中的     </span><br><span class="line"></span><br><span class="line">关闭摄像头应用（mediaserver）</span><br><span class="line">/oem/RKLunch-stop.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1-2-、iq文件"><a href="#2-1-2-、iq文件" class="headerlink" title="2-1-2 、iq文件"></a>2-1-2 、iq文件</h3><p><code>在不使用ispserver时，那就指定iq文件，指定iq文件时，需要使用sample_common.h和sample_commom_isp.c来对ISP进行初始化。</code><br>参考rkmedia_vi_vo_test.c中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;#Rkaiq XML DirPath: %s\n&quot;</span>, iq_file_dir);</span><br><span class="line"> <span class="built_in">printf</span>(<span class="string">&quot;#bMultictx: %d\n\n&quot;</span>, bMultictx);</span><br><span class="line"> <span class="type">rk_aiq_working_mode_t</span> hdr_mode = RK_AIQ_WORKING_MODE_NORMAL;</span><br><span class="line"> <span class="type">int</span> fps = <span class="number">30</span>;</span><br><span class="line"> SAMPLE_COMM_ISP_Init(s32CamId, hdr_mode, bMultictx, iq_file_dir);  <span class="comment">//初始化isp </span></span><br><span class="line"> SAMPLE_COMM_ISP_Run(s32CamId); <span class="comment">//运行isp</span></span><br><span class="line"> SAMPLE_COMM_ISP_SetFrameRate(s32CamId, fps);<span class="comment">//设置帧率</span></span><br></pre></td></tr></table></figure>
+<p>ips相关文档放在内核doc中。Rockchip_Development_Guide_ISP2x_CN_v1.6.4。<br>这个例程rkmedia_vi_vo_test要测试的话，必须指定iq文件。<br>上面两种方法，都可以。</p>
+<h1 id="3、编译rkmeida"><a href="#3、编译rkmeida" class="headerlink" title="3、编译rkmeida"></a>3、编译rkmeida</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//选择环境变量 RV1126_RV1109</span><br><span class="line">source envsetup.sh alientek_rv1126</span><br><span class="line"></span><br><span class="line">//清除刚刚编译的rkmedia</span><br><span class="line">make rkmeida-dirclean</span><br><span class="line"></span><br><span class="line">//重新编译rkmeida, 去buildroot里的out中找</span><br><span class="line">make rkmedia</span><br><span class="line"></span><br><span class="line">//打包到文件系统里面（oem.img）</span><br><span class="line">./build.sh rootfs</span><br><span class="line"></span><br><span class="line">//重新烧写oem.img,若有其他包有配置更新，则需要重新烧写rootfs.img</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>在&#x2F;rv1126&#x2F;sdk&#x2F;buildroot&#x2F;output&#x2F;alientek_rv1126&#x2F;build&#x2F;rkmedia&#x2F;examples修改例程，然后make -j12就可以编译得到例程的可执行程序，这里的例程代码和external下的类似，猜测这里的代码是哪里拷贝过来的，目前我没有验证。<br>总体步骤总结：<br>在sdk源码buildroot&#x2F;output&#x2F;alientek_rv1126&#x2F;build&#x2F;rkmedia&#x2F;examples下操作：<br>1、修改对应的.c文件。例如rkmedia_vi_vo_test.c。<br>2、保存修改，退出编辑后，直接make。<br>3、注意环境变量，如果环境变量变了，应该回到sdk源码根目录下执行source envsetup.sh alientek_rv1126指定环境变量。<br>4、使用adb命令或者scp命令拷贝（开发板需要网络连接）到开发板下。</p>
+<p>sdk配置文件下查看RKMedia的配置:buildroot&#x2F;configs&#x2F;alientek_rv1126_defconfig<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E7%BC%96%E8%AF%91rkmedia%E7%9A%84%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.png"><br>文件系统相关的配置。             </p>
+<ul>
+<li>查看和修改RKmedia的配置<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//选择环境变量 envsetup.sh alientek_rv1126</span><br><span class="line">source envsetup.sh alientek_rv1126</span><br><span class="line">//打开buildroot的menuconfig配置菜单界面</span><br><span class="line">make menuconfig</span><br><span class="line">//保存配置文件到buildroot/configs/alientek_rv1126_defconfig</span><br><span class="line">make savedefconfig</span><br><span class="line">//编译文件系统里面</span><br><span class="line">./build.sh rootfs</span><br></pre></td></tr></table></figure>
+<code>在配置菜单中按下键盘的/按键可以进行搜索</code><br>编译文件系统的同时他会去编译Rkmedia。</li>
+</ul>
+<h1 id="4、mipi屏幕"><a href="#4、mipi屏幕" class="headerlink" title="4、mipi屏幕"></a>4、mipi屏幕</h1><p>在提供的文档中有屏幕的驱动参考和介绍。<br>命令行输入fbset可以查看屏幕的分辨率。<br>1、正点原子的这块屏幕不需要校准。<br>2、触摸输入测试。<br>3、也可以通过RKmedia例程，摄像头捕获屏幕显示 rkmedia_vi_vo_test -a &#x2F;etc&#x2F;iqfiles&#x2F;  -h 1280 -w 720</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读取input event事件的值</span></span><br><span class="line">evtest <span class="comment">//然后选择1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>紧接上面第三条：4、测试也可以通过modetest命令进行测试。<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/RKMeidia%E7%9A%84%E6%A8%A1%E5%9D%97%E5%9B%BE.png"><br>在图中的drm模块，是linux下的一个图形显示框架，也是现在主流的图形显示框架，rkmeida就是通过drm去工作的。<br>在开发板上有libdrm的库。使用find &#x2F; -name <em>libdrm</em>可以搜过到。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">VO_CHN_ATTR_S stVoAttr = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="comment">// VO[0] for primary plane</span></span><br><span class="line">stVoAttr.pcDevNode = <span class="string">&quot;/dev/dri/card0&quot;</span>;</span><br><span class="line">stVoAttr.emPlaneType = VO_PLANE_PRIMARY;</span><br><span class="line">stVoAttr.enImgType = IMAGE_TYPE_RGB888;</span><br></pre></td></tr></table></figure>
+<p>上面就显示了用到drm的card0设备，例子rkmedia_vi_vo_test。</p>
+<p>而回到modetest这个命令</p>
+<table>
+<thead>
+<tr>
+<th align="center">查询选项参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-p</td>
+<td align="center">列出CRTCs和planes，CRTCs表示VOT（Vide Output Processor）,planes表示图层</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">查询输出转换器，Encoder表示输出转换器，如RGB、LVDS、DSI等接口（显示接口，类似hdmi等）</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">列出framebuffers</td>
+</tr>
+<tr>
+<td align="center">-c</td>
+<td align="center">查询Connerctor（连接设备）</td>
+</tr>
+<tr>
+<td align="center">就是表示输出转换器和显示面板交互的部分</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">CRTCs一个屏幕只有一个。</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">通用参数选项</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-a</td>
+<td align="center">使能原子操作</td>
+</tr>
+<tr>
+<td align="center">-d</td>
+<td align="center">模式设置后放置主控器</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">列出framebuffers</td>
+</tr>
+<tr>
+<td align="center">-c</td>
+<td align="center">查询Connerctor(连接装备)</td>
+</tr>
+<tr>
+<td align="center">-M</td>
+<td align="center">设置驱动，比如rk的就是rockchip</td>
+</tr>
+<tr>
+<td align="center">-D</td>
+<td align="center">指定对应的ID号</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th align="center">测试参数选项</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">-P</td>
+<td align="center">解析plane参数</td>
+</tr>
+<tr>
+<td align="center">-S</td>
+<td align="center">解析connector参数</td>
+</tr>
+<tr>
+<td align="center">-C</td>
+<td align="center">测试光标</td>
+</tr>
+<tr>
+<td align="center">-V</td>
+<td align="center">测试同步翻页（垂直同步vsync）</td>
+</tr>
+<tr>
+<td align="center">-W</td>
+<td align="center">解析property</td>
+</tr>
+</tbody></table>
+<p>*测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">modetest --help //查看帮助</span><br><span class="line">modetest -M rockchip 或者 modetest //查看当前系统DRM情况</span><br><span class="line">modetest -M rockchip|cut -f1|grep -E ^[0-9A-Z] //查看各个模块的id</span><br><span class="line">modetest -M rockchip -s 56@53:720x1280@RG24 //屏幕显示测试</span><br><span class="line">modetest -M rockchip -D 0 -a -s 56@53:720X1280 -P 52@53:720x1280</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>扩展：shell命令对于参数，&lt;&gt;表示必填像，[]表示可填，使用--help查看</code></li>
+</ul>
+<h1 id="5、摄像头"><a href="#5、摄像头" class="headerlink" title="5、摄像头"></a>5、摄像头</h1><p> 摄像头详细参数看文档<br> 在rkmedia的rkmedia_vi_vo_test.c中存在一个RGA示范用例<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">RngInfo.u8Enable = 1;</span><br><span class="line">RK_MPI_VI_RGN_SetCover(s32CamId, 1, &amp;RngInfo, &amp;CoverInfo);</span><br><span class="line"></span><br><span class="line">// rga0 for primary plane</span><br><span class="line">RGA_ATTR_S stRgaAttr;</span><br><span class="line">memset(&amp;stRgaAttr, 0, sizeof(stRgaAttr));</span><br><span class="line">stRgaAttr.bEnBufPool = RK_TRUE;</span><br><span class="line">stRgaAttr.u16BufPoolCnt = 3;</span><br><span class="line">stRgaAttr.u16Rotaion = 90;</span><br><span class="line">stRgaAttr.stImgIn.u32X = 0;</span><br><span class="line">stRgaAttr.stImgIn.u32Y = 0;</span><br><span class="line">stRgaAttr.stImgIn.imgType = IMAGE_TYPE_NV12;</span><br><span class="line">stRgaAttr.stImgIn.u32Width = video_width;</span><br><span class="line">stRgaAttr.stImgIn.u32Height = video_height;</span><br><span class="line">stRgaAttr.stImgIn.u32HorStride = video_width;</span><br><span class="line">stRgaAttr.stImgIn.u32VirStride = video_height;</span><br><span class="line">stRgaAttr.stImgOut.u32X = 0;</span><br><span class="line">stRgaAttr.stImgOut.u32Y = 0;</span><br></pre></td></tr></table></figure><br> 这里的90是利用了RGA功能图形硬件加速做的旋转。<br> 板子有两个摄像头插槽。</p>
+<h1 id="6、AI模型运行流程"><a href="#6、AI模型运行流程" class="headerlink" title="6、AI模型运行流程"></a>6、AI模型运行流程</h1><p> <img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/AI%E6%A8%A1%E5%9E%8B%E9%83%A8%E7%BD%B2%E6%B5%81%E7%A8%8B.png"><br> 假设 ：AI网络模型在pc端运行，运行的模型效果比较理想，也就是<code>测试集</code>的<code>损失值比较低</code>，正确率比较高。说明模型的泛化能力比较好。这个时候就需要转化操作。<br> 就是将pc端的网络模型转化为RKNN模型。应为rk的npu不能运行其他框架的模型，只能运行rknn模型。通过RKNN toolkit将模型转化，然后使用这个工具<br> 进行仿真（主要看内存，cpu情况），然后部署到板子上，<br>  <img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/AI%E4%BE%8B%E7%A8%8B%E6%8F%8F%E8%BF%B0.png"> </p>
+<h2 id="6-1、rv1126芯片介绍"><a href="#6-1、rv1126芯片介绍" class="headerlink" title="6-1、rv1126芯片介绍"></a>6-1、rv1126芯片介绍</h2><p>内嵌了硬件视频编码器，由risc-v mcufastboot快速启动。<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/1126%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE%E5%9B%BE.png"><br>软件解码和硬件解码区别。软件解码靠cpu，简称软解。同样的，软件编码也是采用cpu处理。而硬件编解码。就是采用硬件或者模块解码。类似gpu。<br>芯片有通用型和专用型之分，imx6u就是通用控制，在汽车电子行业用的比较多，1126在音视频AI中用的多。<br>1126支持很多深度学习框架。</p>
+<ul>
+<li>AI例程主要包括三个来源，1、基于RockX进行开发，但是无法获知源码，无法进行更改，2、rockface，要钱不开源。3、采用预训练模型。采用自训练模型。<br>一个模型相关的参数，输入输出，均值，标准差，欧式距离，余弦距离，阈值。<br>rockx发布的<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/rockx%E4%BE%8B%E7%A8%8B.png"></li>
+</ul>
+<p>下面是预训练模型发布的<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/rockx%E4%BE%8B%E7%A8%8B1.png"></p>
+<p>下面是开源的AI模型<br><img src="../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/rockx%E4%BE%8B%E7%A8%8B1.png"></p>
+<h2 id="6-2、-学习AI必备"><a href="#6-2、-学习AI必备" class="headerlink" title="6-2、 学习AI必备"></a>6-2、 学习AI必备</h2><p>1、入门python<br>2、学习一种传统图像处理&#x2F;开源计算机视觉库<br>opencv 、matlab、dlib（人脸识别算法库）<br>3、具有一些高等数学基础<br>导数、偏导数、梯度、微积分、卷积、高斯滤波、概率统计、正态分布、均匀分布、熵、激活函数、方差、回归分析、聚类算法、贝叶斯算法、线性代数等<br>4、选择一种深度学习框架<br>tensorflow tensorflow lite 、pytorch、 caffe等<br>5、UI界面开发学习<br>qt<br>6、其他学习<br>数据库<br>sqlite3  mysql</p>
+<p>基于平台进行开发，rk平台的文件系统时buildroot文件系统。在其他模型通过RKNN Toolkit进行转换后，使用RkNN C API进行调用。 </p>
+<ul>
+<li>交叉编译器我放到了&#x2F;home&#x2F;ygc&#x2F;Desktop&#x2F;linux-gcc下</li>
+</ul>
+<p> 节点1.5第6.37秒</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn">naro-ygc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn/posts/73778e8c.html">https://naro-ygc.cn/posts/73778e8c.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://naro-ygc.cn" target="_blank">naro</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%B0%81%E9%9D%A2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/ce15fa91.html" title="wsdl接口"><img class="cover" src="/img/5_%E9%9F%B3%E8%A7%86%E9%A2%91%E5%8D%8F%E8%AE%AE/wsdl%E6%8E%A5%E5%8F%A3/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">wsdl接口</div></div></a></div><div class="next-post pull-right"><a href="/posts/1ee5af06.html" title="AI人工智能深度学习-正式篇"><img class="cover" src="/../../../img/6_AI-%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/AI%E8%A7%86%E8%A7%89/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AI人工智能深度学习-正式篇</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/log.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">naro-ygc</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E7%AF%87"><span class="toc-number">1.</span> <span class="toc-text">准备篇</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81-%E5%9B%BE%E5%83%8F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">2.</span> <span class="toc-text">1、 图像相关知识点</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1%E3%80%81-RKAIQ%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">2.1.</span> <span class="toc-text">1-1、 RKAIQ宏定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2%E3%80%81%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%88%86%E5%8C%BA"><span class="toc-number">2.2.</span> <span class="toc-text">1-2、文件系统分区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1%E3%80%81%E5%B0%9D%E8%AF%95%E4%BF%AE%E6%94%B9%E5%88%86%E5%8C%BA"><span class="toc-number">2.2.1.</span> <span class="toc-text">1-2-1、尝试修改分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2%E3%80%81%E9%95%9C%E5%83%8F%E7%83%A7%E5%BD%95"><span class="toc-number">2.2.2.</span> <span class="toc-text">1-2-2、镜像烧录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3%E3%80%81%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">2.3.</span> <span class="toc-text">1-3、开机自启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4%E3%80%81%E5%88%A9%E7%94%A8%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8%EF%BC%8C%E5%AE%9E%E7%8E%B0%E9%9D%99%E6%80%81ip%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">2.4.</span> <span class="toc-text">1-4、利用开机自启动，实现静态ip的设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2-%E3%80%81iq%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.1.</span> <span class="toc-text">2-1-2 、iq文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E3%80%81%E7%BC%96%E8%AF%91rkmeida"><span class="toc-number">3.</span> <span class="toc-text">3、编译rkmeida</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4%E3%80%81mipi%E5%B1%8F%E5%B9%95"><span class="toc-number">4.</span> <span class="toc-text">4、mipi屏幕</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5%E3%80%81%E6%91%84%E5%83%8F%E5%A4%B4"><span class="toc-number">5.</span> <span class="toc-text">5、摄像头</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6%E3%80%81AI%E6%A8%A1%E5%9E%8B%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">6.</span> <span class="toc-text">6、AI模型运行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#6-1%E3%80%81rv1126%E8%8A%AF%E7%89%87%E4%BB%8B%E7%BB%8D"><span class="toc-number">6.1.</span> <span class="toc-text">6-1、rv1126芯片介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-2%E3%80%81-%E5%AD%A6%E4%B9%A0AI%E5%BF%85%E5%A4%87"><span class="toc-number">6.2.</span> <span class="toc-text">6-2、 学习AI必备</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/a003dbfe.html" title="openssl和unzip和zip移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="openssl和unzip和zip移植"/></a><div class="content"><a class="title" href="/posts/a003dbfe.html" title="openssl和unzip和zip移植">openssl和unzip和zip移植</a><time datetime="2025-07-02T09:39:47.737Z" title="发表于 2025-07-02 17:39:47">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/fc7f7e68.html" title="x264和x265 移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="x264和x265 移植"/></a><div class="content"><a class="title" href="/posts/fc7f7e68.html" title="x264和x265 移植">x264和x265 移植</a><time datetime="2025-07-02T09:36:36.770Z" title="发表于 2025-07-02 17:36:36">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/fc7f7e68.html" title="富瀚mmc移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="富瀚mmc移植"/></a><div class="content"><a class="title" href="/posts/fc7f7e68.html" title="富瀚mmc移植">富瀚mmc移植</a><time datetime="2025-07-02T09:34:35.001Z" title="发表于 2025-07-02 17:34:35">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d35c4abc.html" title="富瀚ffmpeg移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="富瀚ffmpeg移植"/></a><div class="content"><a class="title" href="/posts/d35c4abc.html" title="富瀚ffmpeg移植">富瀚ffmpeg移植</a><time datetime="2025-07-02T09:30:58.865Z" title="发表于 2025-07-02 17:30:58">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/93adaabb.html" title="map"><img src="/img/7_linux%E5%BC%80%E5%8F%91/cpp/linuxCpp/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="map"/></a><div class="content"><a class="title" href="/posts/93adaabb.html" title="map">map</a><time datetime="2025-07-02T09:22:59.621Z" title="发表于 2025-07-02 17:22:59">2025-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By naro-ygc</div><div class="footer_custom_text">未经本人同意不得作于其他用途</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/网络/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 网络 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/驱动、bootleader、文件系统/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 驱动、bootleader、文件系统 (21)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/Linux开发/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 Linux开发 (19)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/问题总结/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">💡 问题总结 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/开发方法/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 开发方法 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/AI-深度学习/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 AI-深度学习 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/音视频协议/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 音视频协议 (8)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="https://naro-ygc.cn/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #f2f2f2;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #b30070}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"><head><meta name="referrer" content="no-referrer"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>系统调用 | naro</title><meta name="author" content="naro-ygc,862450734@qq.com"><meta name="copyright" content="naro-ygc"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#0d0d0d"><meta name="description" content="系统调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统调用">
+<meta property="og:url" content="https://naro-ygc.cn/posts/4f5d4e8d.html">
+<meta property="og:site_name" content="naro">
+<meta property="og:description" content="系统调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://naro-ygc.cn/img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%B0%81%E9%9D%A2.png">
+<meta property="article:published_time" content="2025-05-06T17:18:12.691Z">
+<meta property="article:modified_time" content="2025-05-11T19:51:27.022Z">
+<meta property="article:author" content="naro-ygc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://naro-ygc.cn/img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%B0%81%E9%9D%A2.png"><link rel="shortcut icon" href="/img/log.png"><link rel="canonical" href="https://naro-ygc.cn/posts/4f5d4e8d.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":false,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '系统调用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-05-12 03:51:27'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="/css/universe.css"><!-- hexo injector head_end start --><link rel="stylesheet" href="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/animate.min.css" media="print" onload="this.media='screen'"><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><script>(()=>{
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load',() => { preloader.endLoading() })
+
+  if (false) {
+    document.addEventListener('pjax:send', () => { preloader.initLoading() })
+    document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+  }
+})()</script><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/log.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/../../../img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%B0%81%E9%9D%A2.png')"><nav id="nav"><span id="blog-info"><a href="/" title="naro"><span class="site-name">naro</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">系统调用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-05-06T17:18:12.691Z" title="发表于 2025-05-07 01:18:12">2025-05-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-11T19:51:27.022Z" title="更新于 2025-05-12 03:51:27">2025-05-12</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Linux%E5%BC%80%E5%8F%91/">Linux开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>11分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="系统调用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1、系统调用号"><a href="#1、系统调用号" class="headerlink" title="1、系统调用号"></a>1、系统调用号</h1><h2 id="asmlinkage"><a href="#asmlinkage" class="headerlink" title="asmlinkage"></a>asmlinkage</h2><p>asmlinkage：asmlinkage 是 Linux 内核中用于定义系统调用的函数的修饰符。asmlinkage 表示该函数是内核函数，不能被用户空间程序调用。只从栈中获取参数，返回结果也只通过栈返回。<br>在 Linux 系统中，每个系统调用都有一个唯一的系统调用号，用户空间程序通过这些系统调用号来请求内核执行特定的系统调用。不同的 Linux 内核版本和架构（如 x86、ARM 等）的系统调用号可能会有所不同。以下为你分别介绍常见架构下的部分系统调用及其系统调用号：</p>
+<h3 id="x86-64-架构"><a href="#x86-64-架构" class="headerlink" title="x86_64 架构"></a>x86_64 架构</h3><p>在 x86_64 架构下，系统调用通过 <code>syscall</code> 指令发起，下面是一些常见系统调用及其系统调用号：</p>
+<table>
+<thead>
+<tr>
+<th>系统调用名</th>
+<th>系统调用号</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>read</code></td>
+<td>0</td>
+<td>从文件描述符读取数据</td>
+</tr>
+<tr>
+<td><code>write</code></td>
+<td>1</td>
+<td>向文件描述符写入数据</td>
+</tr>
+<tr>
+<td><code>open</code></td>
+<td>2</td>
+<td>打开文件或设备</td>
+</tr>
+<tr>
+<td><code>close</code></td>
+<td>3</td>
+<td>关闭文件描述符</td>
+</tr>
+<tr>
+<td><code>stat</code></td>
+<td>4</td>
+<td>获取文件状态信息</td>
+</tr>
+<tr>
+<td><code>fstat</code></td>
+<td>5</td>
+<td>通过文件描述符获取文件状态信息</td>
+</tr>
+<tr>
+<td><code>lstat</code></td>
+<td>6</td>
+<td>获取符号链接的状态信息</td>
+</tr>
+<tr>
+<td><code>poll</code></td>
+<td>7</td>
+<td>等待文件描述符上的 I&#x2F;O 事件</td>
+</tr>
+<tr>
+<td><code>lseek</code></td>
+<td>8</td>
+<td>移动文件读写指针</td>
+</tr>
+<tr>
+<td><code>mmap</code></td>
+<td>9</td>
+<td>内存映射文件或设备</td>
+</tr>
+<tr>
+<td><code>munmap</code></td>
+<td>11</td>
+<td>解除内存映射</td>
+</tr>
+<tr>
+<td><code>brk</code></td>
+<td>12</td>
+<td>调整数据段的大小</td>
+</tr>
+<tr>
+<td><code>rt_sigaction</code></td>
+<td>13</td>
+<td>设置信号处理函数</td>
+</tr>
+<tr>
+<td><code>rt_sigprocmask</code></td>
+<td>14</td>
+<td>阻塞或解除阻塞信号</td>
+</tr>
+<tr>
+<td><code>rt_sigreturn</code></td>
+<td>15</td>
+<td>从信号处理程序返回</td>
+</tr>
+<tr>
+<td><code>ioctl</code></td>
+<td>16</td>
+<td>对设备文件执行特定操作</td>
+</tr>
+<tr>
+<td><code>pread64</code></td>
+<td>17</td>
+<td>从指定偏移量处读取数据</td>
+</tr>
+<tr>
+<td><code>pwrite64</code></td>
+<td>18</td>
+<td>向指定偏移量处写入数据</td>
+</tr>
+<tr>
+<td><code>readv</code></td>
+<td>19</td>
+<td>分散读</td>
+</tr>
+<tr>
+<td><code>writev</code></td>
+<td>20</td>
+<td>集中写</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>21</td>
+<td>检查文件的访问权限</td>
+</tr>
+<tr>
+<td><code>pipe</code></td>
+<td>22</td>
+<td>创建管道</td>
+</tr>
+<tr>
+<td><code>select</code></td>
+<td>23</td>
+<td>等待文件描述符上的 I&#x2F;O 事件</td>
+</tr>
+<tr>
+<td><code>sched_yield</code></td>
+<td>24</td>
+<td>主动让出 CPU</td>
+</tr>
+</tbody></table>
+<h3 id="ARM-架构"><a href="#ARM-架构" class="headerlink" title="ARM 架构"></a>ARM 架构</h3><p>ARM 架构下系统调用的实现和系统调用号也有其特点，以下是部分常见系统调用号：</p>
+<table>
+<thead>
+<tr>
+<th>系统调用名</th>
+<th>系统调用号</th>
+<th>功能描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>read</code></td>
+<td>3</td>
+<td>从文件描述符读取数据</td>
+</tr>
+<tr>
+<td><code>write</code></td>
+<td>4</td>
+<td>向文件描述符写入数据</td>
+</tr>
+<tr>
+<td><code>open</code></td>
+<td>5</td>
+<td>打开文件或设备</td>
+</tr>
+<tr>
+<td><code>close</code></td>
+<td>6</td>
+<td>关闭文件描述符</td>
+</tr>
+<tr>
+<td><code>stat</code></td>
+<td>106</td>
+<td>获取文件状态信息</td>
+</tr>
+<tr>
+<td><code>fstat</code></td>
+<td>107</td>
+<td>通过文件描述符获取文件状态信息</td>
+</tr>
+<tr>
+<td><code>lstat</code></td>
+<td>108</td>
+<td>获取符号链接的状态信息</td>
+</tr>
+</tbody></table>
+<p>你可以通过以下几种方式查看系统调用号：</p>
+<ul>
+<li><strong>查阅内核源码</strong>：Linux 内核源码中的 <code>include/uapi/asm-generic/unistd.h</code>（对于通用部分）以及 <code>arch/&lt;架构&gt;/include/uapi/asm/unistd.h</code>（对于特定架构）文件中定义了系统调用号。</li>
+<li><strong>使用 <code>man</code> 手册</strong>：部分 <code>man</code> 手册页会提及系统调用号，例如 <code>man 2 syscalls</code>。</li>
+<li><strong>使用 <code>syscall(2)</code> 手册</strong>：<code>man 2 syscall</code> 可以提供有关系统调用号的一些信息。</li>
+</ul>
+<h2 id="系统调用号传递给内核"><a href="#系统调用号传递给内核" class="headerlink" title="系统调用号传递给内核"></a>系统调用号传递给内核</h2><p>在 ARM Linux 系统中，当用户空间程序发起系统调用并陷入内核之前，需要将系统调用号以及相关参数传递给内核，主要通过以下方式实现：</p>
+<h3 id="1-寄存器传递"><a href="#1-寄存器传递" class="headerlink" title="1. 寄存器传递"></a>1. 寄存器传递</h3><p>在 ARM 架构里，通常使用寄存器来传递系统调用号和参数。具体的寄存器分配规则由 ABI（Application Binary Interface）规定，常见的做法如下：</p>
+<ul>
+<li><strong>系统调用号传递</strong>：一般会把系统调用号存于特定的寄存器中，像 ARM EABI（Embedded Application Binary Interface）规定使用 <code>R7</code> 寄存器来存放系统调用号。例如，当用户程序要发起 <code>read</code> 系统调用时，会先把 <code>read</code> 对应的系统调用号加载到 <code>R7</code> 寄存器。</li>
+<li><strong>参数传递</strong>：系统调用所需的参数会按顺序存于其他寄存器，常见的是 <code>R0 - R6</code> 寄存器。例如，<code>read</code> 系统调用需要文件描述符、缓冲区地址和读取字节数这三个参数，那么这些参数会依次存于 <code>R0</code>、<code>R1</code> 和 <code>R2</code> 寄存器。</li>
+</ul>
+<h3 id="2-代码示例（以汇编代码模拟系统调用）"><a href="#2-代码示例（以汇编代码模拟系统调用）" class="headerlink" title="2. 代码示例（以汇编代码模拟系统调用）"></a>2. 代码示例（以汇编代码模拟系统调用）</h3><p>以下是一个简单的 ARM 汇编代码示例，展示了如何通过 <code>svc</code> 指令发起 <code>write</code> 系统调用，同时传递系统调用号和参数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    @ 数据段</span><br><span class="line">    .data</span><br><span class="line">message:</span><br><span class="line">    .ascii &quot;Hello, World!\n&quot;</span><br><span class="line">    .equ len, . - message</span><br><span class="line"></span><br><span class="line">    @ 代码段</span><br><span class="line">    .text</span><br><span class="line">    .global _start</span><br><span class="line"></span><br><span class="line">_start:</span><br><span class="line">    @ 设置系统调用号，write 系统调用号为 4</span><br><span class="line">    mov r7, #4      </span><br><span class="line">    @ 设置文件描述符，标准输出为 1</span><br><span class="line">    mov r0, #1      </span><br><span class="line">    @ 设置缓冲区地址</span><br><span class="line">    ldr r1, =message </span><br><span class="line">    @ 设置写入的字节数</span><br><span class="line">    mov r2, #len     </span><br><span class="line">    @ 触发系统调用</span><br><span class="line">    svc 0           </span><br><span class="line"></span><br><span class="line">    @ 设置退出系统调用号，exit 系统调用号为 1</span><br><span class="line">    mov r7, #1      </span><br><span class="line">    @ 设置退出状态码</span><br><span class="line">    mov r0, #0      </span><br><span class="line">    @ 触发系统调用</span><br><span class="line">    svc 0           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="代码解释"><a href="#代码解释" class="headerlink" title="代码解释"></a>代码解释</h3><ul>
+<li><strong>系统调用号设置</strong>：<code>mov r7, #4</code> 将 <code>write</code> 系统调用号 4 存于 <code>R7</code> 寄存器；<code>mov r7, #1</code> 把 <code>exit</code> 系统调用号 1 存于 <code>R7</code> 寄存器。</li>
+<li><strong>参数设置</strong>：<code>mov r0, #1</code> 将标准输出的文件描述符 1 存于 <code>R0</code> 寄存器；<code>ldr r1, =message</code> 把要输出的字符串地址加载到 <code>R1</code> 寄存器；<code>mov r2, #len</code> 把字符串长度存于 <code>R2</code> 寄存器；<code>mov r0, #0</code> 将退出状态码 0 存于 <code>R0</code> 寄存器。</li>
+<li><strong>触发系统调用</strong>：<code>svc 0</code> 指令触发异常，使处理器从用户模式切换到内核模式，内核依据 <code>R7</code> 寄存器中的系统调用号调用相应的系统调用处理函数，并使用 <code>R0 - R6</code> 寄存器中的参数执行具体操作。</li>
+</ul>
+<h3 id="3-高级语言中的封装"><a href="#3-高级语言中的封装" class="headerlink" title="3. 高级语言中的封装"></a>3. 高级语言中的封装</h3><p>在高级语言（如 C 语言）里，系统调用一般通过库函数进行封装。这些库函数会在内部完成系统调用号和参数的设置，然后触发 <code>svc</code> 指令。例如，在 C 语言中使用 <code>write</code> 函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *message = <span class="string">&quot;Hello, World!\n&quot;</span>;</span><br><span class="line">    write(<span class="number">1</span>, message, <span class="number">14</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在编译和执行这段代码时，<code>write</code> 库函数会把 <code>write</code> 系统调用号和参数按 ABI 规定存于相应寄存器，再触发 <code>svc</code> 指令来发起系统调用。 </p>
+<h2 id="swi-指令"><a href="#swi-指令" class="headerlink" title="swi 指令"></a>swi 指令</h2><p>在早期的 ARM 架构中，确实使用 <code>SWI</code>（Software Interrupt，软件中断）指令来触发系统调用，不过后来逐渐被 <code>SVC</code>（Supervisor Call）指令所取代。下面为你详细介绍它们在传递系统调用号进入内核时的相关情况：</p>
+<h3 id="使用-SWI-指令触发系统调用"><a href="#使用-SWI-指令触发系统调用" class="headerlink" title="使用 SWI 指令触发系统调用"></a>使用 <code>SWI</code> 指令触发系统调用</h3><h4 id="1-基本原理"><a href="#1-基本原理" class="headerlink" title="1. 基本原理"></a>1. 基本原理</h4><p><code>SWI</code> 指令是一种软中断指令，当执行该指令时，处理器会从用户模式切换到管理模式（Supervisor Mode），并跳转到异常向量表中 <code>SWI</code> 异常对应的入口地址，从而进入内核执行相应的异常处理程序。</p>
+<h4 id="2-系统调用号传递"><a href="#2-系统调用号传递" class="headerlink" title="2. 系统调用号传递"></a>2. 系统调用号传递</h4><p>在使用 <code>SWI</code> 指令时，系统调用号通常被编码在 <code>SWI</code> 指令的立即数中。例如，<code>SWI</code> 指令的格式可能如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SWI &lt;imm24&gt;</span><br></pre></td></tr></table></figure>
+<p>这里的 <code>&lt;imm24&gt;</code> 是一个 24 位的立即数，系统调用号就包含在这个立即数中。当执行 <code>SWI</code> 指令时，内核可以从这个立即数中提取出系统调用号，进而确定要执行的具体系统调用。</p>
+<h4 id="3-代码示例（汇编）"><a href="#3-代码示例（汇编）" class="headerlink" title="3. 代码示例（汇编）"></a>3. 代码示例（汇编）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">    @ 数据段</span><br><span class="line">    .data</span><br><span class="line">message:</span><br><span class="line">    .ascii &quot;Hello, World!\n&quot;</span><br><span class="line">    .equ len, . - message</span><br><span class="line"></span><br><span class="line">    @ 代码段</span><br><span class="line">    .text</span><br><span class="line">    .global _start</span><br><span class="line"></span><br><span class="line">_start:</span><br><span class="line">    @ 设置文件描述符，标准输出为 1</span><br><span class="line">    mov r0, #1      </span><br><span class="line">    @ 设置缓冲区地址</span><br><span class="line">    ldr r1, =message </span><br><span class="line">    @ 设置写入的字节数</span><br><span class="line">    mov r2, #len     </span><br><span class="line">    @ 触发 SWI 指令，假设 write 系统调用号编码在立即数中</span><br><span class="line">    swi #4          </span><br><span class="line"></span><br><span class="line">    @ 设置退出系统调用</span><br><span class="line">    mov r0, #0      @ 设置退出状态码</span><br><span class="line">    swi #1          @ 触发 SWI 指令，exit 系统调用号</span><br><span class="line"></span><br><span class="line">    @ 程序结束</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+<p>在这个示例中，<code>swi #4</code> 触发了 <code>write</code> 系统调用，<code>swi #1</code> 触发了 <code>exit</code> 系统调用，系统调用号被直接编码在 <code>SWI</code> 指令的立即数中。</p>
+<h3 id="从-SWI-到-SVC-的转变"><a href="#从-SWI-到-SVC-的转变" class="headerlink" title="从 SWI 到 SVC 的转变"></a>从 <code>SWI</code> 到 <code>SVC</code> 的转变</h3><p>随着 ARM 架构的发展，为了提高指令集的安全性和兼容性，引入了 <code>SVC</code> 指令来替代 <code>SWI</code> 指令。<code>SVC</code> 指令在功能上与 <code>SWI</code> 指令类似，也是用于触发系统调用，但它的设计更加清晰和安全。在使用 <code>SVC</code> 指令时，系统调用号通常通过寄存器（如 <code>R7</code>）传递，而不是编码在指令的立即数中。</p>
+<h4 id="代码示例（使用-SVC-指令）"><a href="#代码示例（使用-SVC-指令）" class="headerlink" title="代码示例（使用 SVC 指令）"></a>代码示例（使用 <code>SVC</code> 指令）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">    @ 数据段</span><br><span class="line">    .data</span><br><span class="line">message:</span><br><span class="line">    .ascii &quot;Hello, World!\n&quot;</span><br><span class="line">    .equ len, . - message</span><br><span class="line"></span><br><span class="line">    @ 代码段</span><br><span class="line">    .text</span><br><span class="line">    .global _start</span><br><span class="line"></span><br><span class="line">_start:</span><br><span class="line">    @ 设置系统调用号，write 系统调用号为 4</span><br><span class="line">    mov r7, #4      </span><br><span class="line">    @ 设置文件描述符，标准输出为 1</span><br><span class="line">    mov r0, #1      </span><br><span class="line">    @ 设置缓冲区地址</span><br><span class="line">    ldr r1, =message </span><br><span class="line">    @ 设置写入的字节数</span><br><span class="line">    mov r2, #len     </span><br><span class="line">    @ 触发 SVC 指令</span><br><span class="line">    svc 0           </span><br><span class="line"></span><br><span class="line">    @ 设置退出系统调用号，exit 系统调用号为 1</span><br><span class="line">    mov r7, #1      </span><br><span class="line">    @ 设置退出状态码</span><br><span class="line">    mov r0, #0      </span><br><span class="line">    @ 触发 SVC 指令</span><br><span class="line">    svc 0           </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在这个示例中，系统调用号通过 <code>R7</code> 寄存器传递，<code>svc 0</code> 指令触发系统调用进入内核。</p>
+<p>综上所述，早期 ARM 架构使用 <code>SWI</code> 指令触发系统调用，系统调用号编码在指令立即数中；后来的架构采用 <code>SVC</code> 指令，系统调用号通过寄存器传递。 </p>
+<h1 id="2、内核将数据接收，内核向用户空间返回数据"><a href="#2、内核将数据接收，内核向用户空间返回数据" class="headerlink" title="2、内核将数据接收，内核向用户空间返回数据"></a>2、内核将数据接收，内核向用户空间返回数据</h1><p>在 Linux 系统中，内核与用户空间的数据交互是一个关键操作，下面将详细介绍内核接收来自用户空间的数据以及将内核空间的数据传递给用户空间的相关内容。</p>
+<h2 id="内核接收来自用户空间的数据"><a href="#内核接收来自用户空间的数据" class="headerlink" title="内核接收来自用户空间的数据"></a>内核接收来自用户空间的数据</h2><h3 id="1-系统调用中的参数传递"><a href="#1-系统调用中的参数传递" class="headerlink" title="1. 系统调用中的参数传递"></a>1. 系统调用中的参数传递</h3><p>当用户空间程序发起系统调用时，会将数据通过寄存器或栈传递给内核。在 ARM 架构中，常见的是使用寄存器传递参数，例如使用 <code>R0 - R6</code> 传递系统调用的参数。内核在处理系统调用时，会从这些寄存器中获取用户传递的数据。</p>
+<h3 id="2-使用-copy-from-user-函数"><a href="#2-使用-copy-from-user-函数" class="headerlink" title="2. 使用 copy_from_user 函数"></a>2. 使用 <code>copy_from_user</code> 函数</h3><p>在系统调用处理函数中，如果需要将用户空间的大块数据复制到内核空间，通常会使用 <code>copy_from_user</code> 函数。该函数会检查用户空间地址的有效性，并将数据从用户空间复制到内核空间。</p>
+<p><strong>函数原型</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="title function_">copy_from_user</span><span class="params">(<span class="type">void</span> *to, <span class="type">const</span> <span class="type">void</span> __user *from, <span class="type">unsigned</span> <span class="type">long</span> n)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>to</code>：指向内核空间的目标缓冲区。</li>
+<li><code>from</code>：指向用户空间的源缓冲区。</li>
+<li><code>n</code>：要复制的字节数。</li>
+</ul>
+<p><strong>返回值</strong>：如果复制成功，返回 0；如果出现错误，返回未复制的字节数。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/kernel.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/uaccess.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设这是一个系统调用处理函数</span></span><br><span class="line">SYSCALL_DEFINE1(my_syscall, <span class="type">char</span> __user *, user_buffer) &#123;</span><br><span class="line">    <span class="type">char</span> kernel_buffer[<span class="number">100</span>];</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> result;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将用户空间的数据复制到内核空间</span></span><br><span class="line">    result = copy_from_user(kernel_buffer, user_buffer, <span class="keyword">sizeof</span>(kernel_buffer));</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="number">0</span>) &#123;</span><br><span class="line">        printk(KERN_ERR <span class="string">&quot;Failed to copy data from user space\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -EFAULT;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理内核空间的数据</span></span><br><span class="line">    printk(KERN_INFO <span class="string">&quot;Received data from user space: %s\n&quot;</span>, kernel_buffer);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="内核将数据传递给用户空间"><a href="#内核将数据传递给用户空间" class="headerlink" title="内核将数据传递给用户空间"></a>内核将数据传递给用户空间</h2><h3 id="1-使用-copy-to-user-函数"><a href="#1-使用-copy-to-user-函数" class="headerlink" title="1. 使用 copy_to_user 函数"></a>1. 使用 <code>copy_to_user</code> 函数</h3><p>与 <code>copy_from_user</code> 函数相对应，<code>copy_to_user</code> 函数用于将内核空间的数据复制到用户空间。该函数同样会检查用户空间地址的有效性，并将数据从内核空间复制到用户空间。</p>
+<p><strong>函数原型</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">unsigned</span> <span class="type">long</span> <span class="title function_">copy_to_user</span><span class="params">(<span class="type">void</span> __user *to, <span class="type">const</span> <span class="type">void</span> *from, <span class="type">unsigned</span> <span class="type">long</span> n)</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>to</code>：指向用户空间的目标缓冲区。</li>
+<li><code>from</code>：指向内核空间的源缓冲区。</li>
+<li><code>n</code>：要复制的字节数。</li>
+</ul>
+<p><strong>返回值</strong>：如果复制成功，返回 0；如果出现错误，返回未复制的字节数。</p>
+<p><strong>示例代码</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/kernel.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;linux/uaccess.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设这是一个系统调用处理函数</span></span><br><span class="line">SYSCALL_DEFINE1(my_syscall, <span class="type">char</span> __user *, user_buffer) &#123;</span><br><span class="line">    <span class="type">char</span> kernel_buffer[] = <span class="string">&quot;Hello from kernel!&quot;</span>;</span><br><span class="line">    <span class="type">unsigned</span> <span class="type">long</span> result;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将内核空间的数据复制到用户空间</span></span><br><span class="line">    result = copy_to_user(user_buffer, kernel_buffer, <span class="keyword">sizeof</span>(kernel_buffer));</span><br><span class="line">    <span class="keyword">if</span> (result != <span class="number">0</span>) &#123;</span><br><span class="line">        printk(KERN_ERR <span class="string">&quot;Failed to copy data to user space\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> -EFAULT;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-注意事项"><a href="#2-注意事项" class="headerlink" title="2. 注意事项"></a>2. 注意事项</h3><ul>
+<li><strong>地址有效性检查</strong>：在使用 <code>copy_from_user</code> 和 <code>copy_to_user</code> 函数时，内核会自动检查用户空间地址的有效性，以防止用户程序传递无效的地址。</li>
+<li><strong>权限问题</strong>：内核需要确保用户程序具有访问目标缓冲区的权限，避免数据泄露或越界访问。</li>
+<li><strong>错误处理</strong>：在复制数据时，可能会出现各种错误，如内存不足、地址无效等，因此需要进行适当的错误处理。</li>
+</ul>
+<p>通过上述方法，内核可以安全、有效地与用户空间进行数据交互。</p>
+<p>当系统调用返回的时候，控制权在system_call()函数中，返回给用户空间。</p>
+<h1 id="3、我们的实现一个系统调用"><a href="#3、我们的实现一个系统调用" class="headerlink" title="3、我们的实现一个系统调用"></a>3、我们的实现一个系统调用</h1><p>系统调用号实现自己的比较简单，这里不做说明。可以百度到</p>
+<p>对于想在内核中获取信息传递到应用层。可以使用一个设备节点，对节点进行读写操作。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn">naro-ygc</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://naro-ygc.cn/posts/4f5d4e8d.html">https://naro-ygc.cn/posts/4f5d4e8d.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://naro-ygc.cn" target="_blank">naro</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/../../../img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%B0%81%E9%9D%A2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/41e39f2b.html" title="内存管理"><img class="cover" src="/img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">内存管理</div></div></a></div><div class="next-post pull-right"><a href="/posts/31a6b40.html" title="进程"><img class="cover" src="/../../../img/7_linux%E5%BC%80%E5%8F%91/linux%E5%86%85%E6%A0%B8%E5%BC%80%E5%8F%91%E4%B8%8E%E5%AE%9E%E7%8E%B0/%E8%BF%9B%E7%A8%8B/%E5%B0%81%E9%9D%A2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">进程</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/log.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">naro-ygc</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">70</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7"><span class="toc-number">1.</span> <span class="toc-text">1、系统调用号</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#asmlinkage"><span class="toc-number">1.1.</span> <span class="toc-text">asmlinkage</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#x86-64-%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.1.</span> <span class="toc-text">x86_64 架构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ARM-%E6%9E%B6%E6%9E%84"><span class="toc-number">1.1.2.</span> <span class="toc-text">ARM 架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7%E4%BC%A0%E9%80%92%E7%BB%99%E5%86%85%E6%A0%B8"><span class="toc-number">1.2.</span> <span class="toc-text">系统调用号传递给内核</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AF%84%E5%AD%98%E5%99%A8%E4%BC%A0%E9%80%92"><span class="toc-number">1.2.1.</span> <span class="toc-text">1. 寄存器传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%88%E4%BB%A5%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81%E6%A8%A1%E6%8B%9F%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">2. 代码示例（以汇编代码模拟系统调用）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E8%A7%A3%E9%87%8A"><span class="toc-number">1.2.3.</span> <span class="toc-text">代码解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%AB%98%E7%BA%A7%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%B0%81%E8%A3%85"><span class="toc-number">1.2.4.</span> <span class="toc-text">3. 高级语言中的封装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#swi-%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">swi 指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-SWI-%E6%8C%87%E4%BB%A4%E8%A7%A6%E5%8F%91%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">1.3.1.</span> <span class="toc-text">使用 SWI 指令触发系统调用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">1. 基本原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%8F%B7%E4%BC%A0%E9%80%92"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">2. 系统调用号传递</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%88%E6%B1%87%E7%BC%96%EF%BC%89"><span class="toc-number">1.3.1.3.</span> <span class="toc-text">3. 代码示例（汇编）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E-SWI-%E5%88%B0-SVC-%E7%9A%84%E8%BD%AC%E5%8F%98"><span class="toc-number">1.3.2.</span> <span class="toc-text">从 SWI 到 SVC 的转变</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B%EF%BC%88%E4%BD%BF%E7%94%A8-SVC-%E6%8C%87%E4%BB%A4%EF%BC%89"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">代码示例（使用 SVC 指令）</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E5%86%85%E6%A0%B8%E5%B0%86%E6%95%B0%E6%8D%AE%E6%8E%A5%E6%94%B6%EF%BC%8C%E5%86%85%E6%A0%B8%E5%90%91%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E8%BF%94%E5%9B%9E%E6%95%B0%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">2、内核将数据接收，内核向用户空间返回数据</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E6%8E%A5%E6%94%B6%E6%9D%A5%E8%87%AA%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">内核接收来自用户空间的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E4%B8%AD%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">2.1.1.</span> <span class="toc-text">1. 系统调用中的参数传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BD%BF%E7%94%A8-copy-from-user-%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.2.</span> <span class="toc-text">2. 使用 copy_from_user 函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E6%A0%B8%E5%B0%86%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%92%E7%BB%99%E7%94%A8%E6%88%B7%E7%A9%BA%E9%97%B4"><span class="toc-number">2.2.</span> <span class="toc-text">内核将数据传递给用户空间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%BD%BF%E7%94%A8-copy-to-user-%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.1.</span> <span class="toc-text">1. 使用 copy_to_user 函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.2.2.</span> <span class="toc-text">2. 注意事项</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3%E3%80%81%E6%88%91%E4%BB%AC%E7%9A%84%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">3、我们的实现一个系统调用</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/a003dbfe.html" title="openssl和unzip和zip移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="openssl和unzip和zip移植"/></a><div class="content"><a class="title" href="/posts/a003dbfe.html" title="openssl和unzip和zip移植">openssl和unzip和zip移植</a><time datetime="2025-07-02T09:39:47.737Z" title="发表于 2025-07-02 17:39:47">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/fc7f7e68.html" title="x264和x265 移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="x264和x265 移植"/></a><div class="content"><a class="title" href="/posts/fc7f7e68.html" title="x264和x265 移植">x264和x265 移植</a><time datetime="2025-07-02T09:36:36.770Z" title="发表于 2025-07-02 17:36:36">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/fc7f7e68.html" title="富瀚mmc移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="富瀚mmc移植"/></a><div class="content"><a class="title" href="/posts/fc7f7e68.html" title="富瀚mmc移植">富瀚mmc移植</a><time datetime="2025-07-02T09:34:35.001Z" title="发表于 2025-07-02 17:34:35">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/d35c4abc.html" title="富瀚ffmpeg移植"><img src="/img/7_linux%E5%BC%80%E5%8F%91/%E5%AF%8C%E7%80%9A%E5%B9%B3%E5%8F%B0/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="富瀚ffmpeg移植"/></a><div class="content"><a class="title" href="/posts/d35c4abc.html" title="富瀚ffmpeg移植">富瀚ffmpeg移植</a><time datetime="2025-07-02T09:30:58.865Z" title="发表于 2025-07-02 17:30:58">2025-07-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/93adaabb.html" title="map"><img src="/img/7_linux%E5%BC%80%E5%8F%91/cpp/linuxCpp/%E5%B0%81%E9%9D%A2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="map"/></a><div class="content"><a class="title" href="/posts/93adaabb.html" title="map">map</a><time datetime="2025-07-02T09:22:59.621Z" title="发表于 2025-07-02 17:22:59">2025-07-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By naro-ygc</div><div class="footer_custom_text">未经本人同意不得作于其他用途</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas id="universe"></canvas><script defer src="/js/universe.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div class="no-result" id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div><!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/网络/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 网络 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/驱动、bootleader、文件系统/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 驱动、bootleader、文件系统 (21)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/Linux开发/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 Linux开发 (19)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/问题总结/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">💡 问题总结 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/开发方法/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 开发方法 (2)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/AI-深度学习/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 AI-深度学习 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="https://naro-ygc.cn/categories/音视频协议/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 音视频协议 (8)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="https://naro-ygc.cn/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #f2f2f2;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #b30070}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><div class="js-pjax"><script async="async">var arr = document.getElementsByClassName('recent-post-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '30');
+    arr[i].setAttribute('data-wow-iteration', '1');
+  }</script><script async="async">var arr = document.getElementsByClassName('card-widget');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__zoomIn');
+    arr[i].setAttribute('data-wow-duration', '');
+    arr[i].setAttribute('data-wow-delay', '200ms');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('flink-list-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('article-sort-item');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__slideInRight');
+    arr[i].setAttribute('data-wow-duration', '1.5s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__flipInY');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script><script async="async">var arr = document.getElementsByClassName('site-card');
+for(var i = 0;i<arr.length;i++){
+    arr[i].classList.add('wow');
+    arr[i].classList.add('animate__animated');
+    arr[i].setAttribute('data-wow-duration', '3s');
+    arr[i].setAttribute('data-wow-delay', '');
+    arr[i].setAttribute('data-wow-offset', '');
+    arr[i].setAttribute('data-wow-iteration', '');
+  }</script></div><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow.min.js"></script><script defer src="https://cdn.cbd.int/hexo-butterfly-wowjs/lib/wow_init.js"></script><!-- hexo injector body_end end --></body></html>
